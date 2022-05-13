@@ -3,16 +3,22 @@ import { useState } from 'react'
 
 const Display = (props) => {
   console.log(props)
-  if (props.value === 0) {
+  if (props.all === 0) {
     return (
       <div>
+        No feedback given
       </div>
     )
   }
 
   return (
   <div>
-    {props.text} {props.value}
+    {props.texts[0]} {props.good} <br/>
+    {props.texts[1]} {props.neutral} <br/>
+    {props.texts[2]} {props.bad} <br/>
+    {props.texts[3]} {props.all} <br/>
+    {props.texts[4]} {props.average} <br/>
+    {props.texts[5]} {props.positive} <br/>
   </div>
   )
 }
@@ -26,15 +32,16 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  const texts = ['good', 'neutral', 'bad']
+  const texts = ['good', 'neutral', 'bad', 'all', 'average', 'positive']
   const feedback="give feedback"
   const statistics="statistics"
 
   const setToGood = () => setGood(good + 1)
-
   const setToNeutral = () => setNeutral(neutral + 1)
-
   const setToBad = () => setBad(bad + 1)
+  const all = good + neutral + bad
+  const average = (good * 1 + neutral * 0 + bad * -1) / all
+  const positive = (good * 100 / all) + ' %'
 
   return (
     <div>
@@ -43,9 +50,8 @@ const App = () => {
       <Button handleClick={setToNeutral} text={texts[1]} />
       <Button handleClick={setToBad} text={texts[2]} />
       <h2>{statistics}</h2>
-      <Display text={texts[0]} value={good} />
-      <Display text={texts[1]} value={neutral} />
-      <Display text={texts[2]} value={bad} />
+      <Display texts={texts} good={good} neutral={neutral} 
+          bad={bad} all={all} average={average} positive={positive} />
     </div>
   )
 }
