@@ -4,6 +4,12 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}><b>{text}</b></button>
 )
 
+const VotesArray=(vote, index)=> {
+  console.log(vote, index)
+  const copy = [ ...vote ]
+  copy[index] += 1
+  return copy
+}
 
 const App = () => {
   const anecdotes = [
@@ -17,16 +23,21 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
   
   const texts = ['next anecdote', 'vote']
 
-  const setToSelected=()=>setSelected(
-    Math.floor(Math.random() * anecdotes.length) + 0)
+  const setToSelected = () => setSelected(Math.floor(Math.random() * anecdotes.length) + 0)
   console.log(selected)
+
+  const handleVoteClick=() => setVotes(VotesArray(votes, selected))
+  console.log('The value of the array and index', votes, selected)
 
   return (
     <div>
       <b>{anecdotes[selected]}</b><br />
+      <b>has {votes[selected]} votes </b> <br />
+      <Button handleClick={handleVoteClick} text={texts[1]} />
       <Button handleClick={setToSelected} text={texts[0]} />
     </div>
   )
