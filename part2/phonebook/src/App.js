@@ -13,8 +13,15 @@ const App = () => {
     const newPerson = {
       name: newName
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')    
+
+    if (persons.find(person => person.name.toLowerCase() === newPerson.name.toLowerCase())) {
+      window.alert(`${newPerson.name} is already added to phonebook`)
+      setNewName('')
+    } 
+    else {
+      setPersons(persons.concat(newPerson))
+      setNewName('')    
+    }
   }
 
   const handlePersonNameChange = (event) => {
