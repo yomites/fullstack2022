@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Persons from './components/Persons'
-import Search from './components/Search'
-import AddPersonForm from './components/AddPersonForm'
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
 
 
 const App = () => {
@@ -57,10 +57,15 @@ const App = () => {
 
   return (
     <div>
-      <Search nameSearch={nameSearch} handleSearchChange={handleSearchChange} />
-      <AddPersonForm addPerson={addPerson} newName={newName} 
+      <h2>Phonebook</h2>
+      <Filter nameSearch={nameSearch} handleSearchChange={handleSearchChange} />
+
+      <h3>add a new</h3>
+      <PersonForm addPerson={addPerson} newName={newName} 
         handleNameChange={handleNameChange} newNumber={newNumber} 
         handleNumberChange={handleNumberChange} />
+
+      <h3>Numbers</h3>
       <Persons personsArray={personsArray} />
     </div>
   )

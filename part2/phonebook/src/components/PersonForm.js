@@ -1,9 +1,8 @@
-const AddPersonForm = ({ addPerson, newName, handleNameChange, newNumber, handleNumberChange }) => {
+const PersonForm = ({ addPerson, newName, handleNameChange, newNumber, handleNumberChange }) => {
   
     return (
       <div>
         <form onSubmit={addPerson}> 
-        <h2>add a new</h2>
           <div>
             name: <input value={newName}
             onChange={handleNameChange} />
@@ -19,4 +18,4 @@ const AddPersonForm = ({ addPerson, newName, handleNameChange, newNumber, handle
     )
   }
 
-  export default AddPersonForm
+  export default PersonForm

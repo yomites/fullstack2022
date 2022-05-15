@@ -1,11 +1,10 @@
-const Search = ({ nameSearch, handleSearchChange }) => {
+const Filter = ({ nameSearch, handleSearchChange }) => {
 
     return (
       <div>
-        <h2>Phonebook</h2>
         filter shown with <input value={nameSearch} onChange={handleSearchChange}  />
       </div>
     )
   }
 
-  export default Search
+  export default Filter
