@@ -1,39 +1,4 @@
-const Course = ({ course }) => {
-  console.log(course)
-  return (
-    <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
-  )
-}
-
-const Header = ({ course }) => <h2>{course}</h2>
-
-const Total = ({ parts }) => {
-  console.log(parts)
-  const total = (parts.map(p => p.exercises)).reduce((s, p) => s + p)
-  return (
-   <div>
-        <b>
-          total of {total} exercises
-        </b>
-    </div>
-  )
-}
-
-const Part = ({ part }) => 
-  <p>
-    {part.name} {part.exercises}
-  </p>
-
-const Content = ({ parts }) => 
-  <div>
-    {parts.map(part => 
-          <Part key={part.id} part={part} />
-    )}
-  </div>
+import Course from './components/Course'
 
 const App = () => {
   const header = "Web development curriculum"
