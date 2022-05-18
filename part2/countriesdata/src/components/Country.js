@@ -1,9 +1,17 @@
-const Country = ({ country, countriesArray }) => {
+const Country = ({ country, countriesArray, setCountrySearch }) => {
     console.log('Country component languages', country.languages)
+
+    const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
+
+    const setToCountrySearch = () => setCountrySearch(country.name.common)
     
     if (countriesArray.length > 1) {
+    
       return (
-        <div><b>{country.name.common}</b></div>
+        <div>
+            {country.name.common}
+            <Button onClick={setToCountrySearch} text="show" />
+        </div>
       )
     } 
     else {

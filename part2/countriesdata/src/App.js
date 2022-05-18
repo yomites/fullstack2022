@@ -30,7 +30,8 @@ const App = () => {
   return (
     <div>
       <Filter countrySearch={countrySearch} handleCountryChange={handleCountryChange} />
-      <Countries countriesArray={countriesArray.sort()} countrySearch={countrySearch} />
+      <Countries countriesArray={countriesArray} 
+        countrySearch={countrySearch} setCountrySearch={setCountrySearch} />
     </div>
   )
 }
