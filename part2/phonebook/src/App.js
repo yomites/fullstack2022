@@ -27,7 +27,8 @@ const App = () => {
       name: newName, number: newNumber
     }
 
-    const duplicate = persons.find(person => person.name.toLowerCase() === newPerson.name.toLowerCase())
+    const duplicate = persons.find(person => 
+      person.name.toLowerCase() === newPerson.name.toLowerCase())
 
     if (newPerson.name === '' || newPerson.number === '') {
       window.alert('Name or phone number can not be empty')
@@ -58,6 +59,19 @@ const App = () => {
     setNameSearch(event.target.value)
   }
 
+  const deletePerson = (id) => {
+    console.log('ID to be removed', id)
+    const removePerson = persons.find(person => person.id === id)
+    const choice = window.confirm(`Delete ${removePerson.name}`)
+
+    if (choice) {
+      personService.remove(id).then(() => {
+        setPersons(persons.filter(person =>
+          person.id !== id))
+      })
+    }
+  }
+
   const personsArray = nameSearch ? persons.filter(element => element.name.toUpperCase().includes
       (nameSearch.toUpperCase())) : persons
 
@@ -72,7 +86,7 @@ const App = () => {
         handleNumberChange={handleNumberChange} />
 
       <h3>Numbers</h3>
-      <Persons personsArray={personsArray} />
+      <Persons personsArray={personsArray} deletePerson={deletePerson} />
     </div>
   )
 }
