@@ -37,11 +37,15 @@ const App = () => {
     else if (duplicate) {
       const choice = window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)
       if (choice) {
+        const id = duplicate.id
         const person = persons.find(p => p.name === newPerson.name)
         const changedContacts = { ...person, number: newPerson.number }
 
-        personService.update(duplicate.id, changedContacts).then(returnedContacts => {
-          setPersons(persons.map(p => p.id !== duplicate.id ? p : returnedContacts))
+        personService.update(id, changedContacts).then(returnedContacts => {
+          setPersons(persons.map(p => p.id !== id ? p : returnedContacts))
+        }).catch(error => {
+          alert(`the phonebook contact '${person.name}' was already deleted from server`)
+          setPersons(persons.filter(p => p.id !== id))
         })
         setNewName('')
         setNewNumber('')
@@ -77,7 +81,12 @@ const App = () => {
       personService.remove(id).then(() => {
         setPersons(persons.filter(person =>
           person.id !== id))
+        
+      }).catch(error => {
+        alert(`the phonebook contact '${removePerson.name}' was already deleted from server`)
+        setPersons(persons.filter(p => p.id !== removePerson.id))
       })
+      setNameSearch('')
     }
   }
 
