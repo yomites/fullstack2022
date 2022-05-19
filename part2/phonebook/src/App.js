@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/person'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
@@ -12,12 +12,10 @@ const App = () => {
   const [nameSearch, setNameSearch] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPerson => {
+        setPersons(initialPerson)
       })
   }, [])
   console.log('render', persons.length, 'persons')
@@ -40,9 +38,14 @@ const App = () => {
       setNewNumber('')
     } 
     else {
-      setPersons(persons.concat(newPerson))
-      setNewName('')  
-      setNewNumber('')
+
+      personService
+      .create(newPerson)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')  
+        setNewNumber('')
+      })      
     }
   }
 
