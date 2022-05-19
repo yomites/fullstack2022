@@ -29,14 +29,23 @@ const App = () => {
 
     const duplicate = persons.find(person => 
       person.name.toLowerCase() === newPerson.name.toLowerCase())
+    console.log('Duplicate', duplicate)
 
     if (newPerson.name === '' || newPerson.number === '') {
       window.alert('Name or phone number can not be empty')
     }
-    else if (duplicate !== undefined) {
-      window.alert(`${newPerson.name} is already added to phonebook`)
-      setNewName('')
-      setNewNumber('')
+    else if (duplicate) {
+      const choice = window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)
+      if (choice) {
+        const person = persons.find(p => p.name === newPerson.name)
+        const changedContacts = { ...person, number: newPerson.number }
+
+        personService.update(duplicate.id, changedContacts).then(returnedContacts => {
+          setPersons(persons.map(p => p.id !== duplicate.id ? p : returnedContacts))
+        })
+        setNewName('')
+        setNewNumber('')
+      }
     } 
     else {
 
