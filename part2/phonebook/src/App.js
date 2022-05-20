@@ -4,12 +4,33 @@ import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 
+const Notification = ({ message }) => {
+  const successStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontStyle: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div style={successStyle}>
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameSearch, setNameSearch] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -38,11 +59,17 @@ const App = () => {
       const choice = window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)
       if (choice) {
         const id = duplicate.id
-        const person = persons.find(p => p.name === newPerson.name)
+        const person = persons.find(p => p.name.toLowerCase() === newPerson.name.toLowerCase())
         const changedContacts = { ...person, number: newPerson.number }
 
         personService.update(id, changedContacts).then(returnedContacts => {
           setPersons(persons.map(p => p.id !== id ? p : returnedContacts))
+          
+        }).then(() => {
+          setSuccessMessage(`${newPerson.name}' phone number successfully updated`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         }).catch(error => {
           alert(`the phonebook contact '${person.name}' was already deleted from server`)
           setPersons(persons.filter(p => p.id !== id))
@@ -59,6 +86,11 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')  
         setNewNumber('')
+      }).then(() => {
+        setSuccessMessage(`Added ${newPerson.name}`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
       })      
     }
   }
@@ -96,6 +128,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} />
       <Filter nameSearch={nameSearch} handleSearchChange={handleSearchChange} />
 
       <h3>add a new</h3>
