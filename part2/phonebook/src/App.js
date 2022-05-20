@@ -5,8 +5,13 @@ import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 
 const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  console.log(message)
   const successStyle = {
-    color: 'green',
+    color: message.type === 'success' ? 'green' : 'red',
     background: 'lightgrey',
     fontStyle: 20,
     borderStyle: 'solid',
@@ -14,13 +19,10 @@ const Notification = ({ message }) => {
     padding: 10,
     marginBottom: 10
   }
-  if (message === null) {
-    return null
-  }
-
+  
   return (
     <div style={successStyle}>
-      {message}
+      {message.data}
     </div>
   )
 }
@@ -63,15 +65,11 @@ const App = () => {
         const changedContacts = { ...person, number: newPerson.number }
 
         personService.update(id, changedContacts).then(returnedContacts => {
-          setPersons(persons.map(p => p.id !== id ? p : returnedContacts))
-          
+          setPersons(persons.map(p => p.id !== id ? p : returnedContacts))        
         }).then(() => {
-          setSuccessMessage(`${newPerson.name}' phone number successfully updated`)
-          setTimeout(() => {
-            setSuccessMessage(null)
-          }, 5000)
-        }).catch(error => {
-          alert(`the phonebook contact '${person.name}' was already deleted from server`)
+          successOrFailureNotify(`${newPerson.name}' phone number successfully updated`)
+        }).catch(() => {
+          successOrFailureNotify(`Information of ${newPerson.name} has already been removed from server`, 'error')
           setPersons(persons.filter(p => p.id !== id))
         })
         setNewName('')
@@ -79,20 +77,24 @@ const App = () => {
       }
     } 
     else {
-
       personService
       .create(newPerson)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        successOrFailureNotify(`Added ${newPerson.name}`)
         setNewName('')  
         setNewNumber('')
       }).then(() => {
-        setSuccessMessage(`Added ${newPerson.name}`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
-      })      
+        successOrFailureNotify(`Added ${newPerson.name}`)
+      }).catch(() => successOrFailureNotify(`Adding '${newPerson.name}' failed`, 'error'))     
     }
+  }
+
+  const successOrFailureNotify = (data, type='success') => {
+    setSuccessMessage({ data, type })
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 5000)
   }
 
   const handleNameChange = (event) => setNewName(event.target.value)
@@ -114,8 +116,11 @@ const App = () => {
         setPersons(persons.filter(person =>
           person.id !== id))
         
-      }).catch(error => {
-        alert(`the phonebook contact '${removePerson.name}' was already deleted from server`)
+      }).then(() => {
+        successOrFailureNotify(`'${removePerson.name}' was successfully removed`)
+      })
+      .catch(() => {
+        successOrFailureNotify(`Information of ${removePerson.name} has already been removed from server`, 'error')
         setPersons(persons.filter(p => p.id !== removePerson.id))
       })
       setNameSearch('')
