@@ -94,7 +94,7 @@ const App = () => {
     setSuccessMessage({ data, type })
     setTimeout(() => {
       setSuccessMessage(null)
-    }, 5000)
+    }, 2000)
   }
 
   const handleNameChange = (event) => setNewName(event.target.value)
