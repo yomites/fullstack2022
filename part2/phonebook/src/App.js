@@ -9,7 +9,6 @@ const Notification = ({ message }) => {
     return null
   }
 
-  console.log(message)
   const successStyle = {
     color: message.type === 'success' ? 'green' : 'red',
     background: 'lightgrey',
@@ -67,7 +66,7 @@ const App = () => {
         personService.update(id, changedContacts).then(returnedContacts => {
           setPersons(persons.map(p => p.id !== id ? p : returnedContacts))        
         }).then(() => {
-          successOrFailureNotify(`${newPerson.name}' phone number successfully updated`)
+          successOrFailureNotify(`${newPerson.name}'s phone number successfully updated`)
         }).catch(() => {
           successOrFailureNotify(`Information of ${newPerson.name} has already been removed from server`, 'error')
           setPersons(persons.filter(p => p.id !== id))
@@ -86,8 +85,9 @@ const App = () => {
         setNewNumber('')
       }).then(() => {
         successOrFailureNotify(`Added ${newPerson.name}`)
-      }).catch(() => successOrFailureNotify(`Adding '${newPerson.name}' failed`, 'error'))     
-    }
+      }).catch((error) => 
+        successOrFailureNotify(error.response.data.error, 'error')
+    )}
   }
 
   const successOrFailureNotify = (data, type='success') => {
