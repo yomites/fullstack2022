@@ -53,15 +53,15 @@ const App = () => {
       person.name.toLowerCase() === newPerson.name.toLowerCase())
     console.log('Duplicate', duplicate)
 
-    if (newPerson.name === '' || newPerson.number === '') {
-      window.alert('Name or phone number can not be empty')
-    }
-    else if (duplicate) {
+    // if (newPerson.name === '' || newPerson.number === '') {
+    //   window.alert('Name or phone number can not be empty')
+    // }
+    if (duplicate) {
       const choice = window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)
       if (choice) {
         const id = duplicate.id
-        const person = persons.find(p => p.name.toLowerCase() === newPerson.name.toLowerCase())
-        const changedContacts = { ...person, number: newPerson.number }
+      //  const person = persons.find(p => p.name.toLowerCase() === newPerson.name.toLowerCase())
+        const changedContacts = { ...duplicate, number: newPerson.number }
 
         personService.update(id, changedContacts).then(returnedContacts => {
           setPersons(persons.map(p => p.id !== id ? p : returnedContacts))        
