@@ -1,0 +1,40 @@
+GET http://localhost:3003/api/blogs
+
+###
+POST  http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "author": "Brendan Allison",
+    "title": "Yet another backend note  cypress 4",
+    "url": "http://cypress.com",
+    "likes": 1
+}
+
+###
+POST  http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "author": "Tommy Hilfieger",
+    "title": "The building of another note cypress 2",
+    "url": "http://gogcypress.com",
+    "likes": 1
+}
+
+###
+POST  http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "author": "John Brown",
+    "title": "Yet another note cypress 3",
+    "url": "http://gogcypress.com",
+    "likes": 1
+}
+
+###
+GET http://localhost:3003/api/blogs/628f671e7acf608b48f4d437
+
+###
+GET http://localhost:3003/api/blogs/628f7a627acf608b48f4d43d
