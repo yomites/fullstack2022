@@ -44,4 +44,25 @@ const mostBlogs = (blogs) => {
   return { author: res, blogs: authorBlogsCount[res] }
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return 0
+  }
+  const authors = blogs.map(aut =>  {
+    return { author: aut.author.toUpperCase(), likes: aut.likes }
+  })
+
+  const authorBlogsCount = {}
+  for (const elt of authors) {
+    if (authorBlogsCount[elt.author]) {
+      authorBlogsCount[elt.author] += elt.likes
+    } else {
+      authorBlogsCount[elt.author] = elt.likes
+    }
+  }
+
+  const res = Object.keys(authorBlogsCount).reduce((a, b) => authorBlogsCount[a] > authorBlogsCount[b] ? a : b)
+  return { author: res, likes: authorBlogsCount[res] }
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }

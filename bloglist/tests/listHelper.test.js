@@ -136,3 +136,26 @@ describe('Author with most blogs', () => {
     })
   })
 })
+
+describe('Author with most likes', () => {
+  test('in a blog list with an empty array is none or zero', () => {
+    const result = listHelper.mostLikes(emptyList)
+    expect(result).toBe(0)
+  })
+
+  test('in a blog list with one blog is that author', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra'.toUpperCase(),
+      likes: 5
+    })
+  })
+
+  test('in a blog list with many blogs is the one with highest number of blogs likes', () => {
+    const result = listHelper.mostLikes(listWithManyBlogs)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra'.toUpperCase(),
+      likes: 17
+    })
+  })
+})
