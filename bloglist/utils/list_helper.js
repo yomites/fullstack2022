@@ -15,7 +15,7 @@ const totalLikes = (blogs) => {
 
 const favoriteBlog = (blogs) => {
   if (blogs.length === 0) {
-    return null
+    return 0
   }
   const likesArray = blogs.map(blog => blog.likes)
   const indexOfMaxLikes = likesArray.indexOf(Math.max(...likesArray))
@@ -27,4 +27,21 @@ const favoriteBlog = (blogs) => {
   return blogNeededProperties
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) {
+    return 0
+  }
+  const authors = blogs.map(aut => aut.author.toUpperCase())
+  const authorBlogsCount = {}
+  for (const elt of authors) {
+    if (authorBlogsCount[elt]) {
+      authorBlogsCount[elt] += 1
+    } else {
+      authorBlogsCount[elt] = 1
+    }
+  }
+  const res = Object.keys(authorBlogsCount).reduce((a, b) => authorBlogsCount[a] > authorBlogsCount[b] ? a : b)
+  return { author: res, blogs: authorBlogsCount[res] }
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }

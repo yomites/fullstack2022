@@ -92,7 +92,7 @@ describe('Blog with most likes', () => {
 
   test('in an empty blog list is none or zero', () => {
     const result = listHelper.favoriteBlog(emptyList)
-    expect(result).toEqual(null)
+    expect(result).toBe(0)
   })
 
   test('in a blog list with just one blog is that likes', () => {
@@ -110,6 +110,29 @@ describe('Blog with most likes', () => {
       title: listWithManyBlogs[2].title,
       author: listWithManyBlogs[2].author,
       likes: listWithManyBlogs[2].likes
+    })
+  })
+})
+
+describe('Author with most blogs', () => {
+  test('in a blog list with an empty array is none or zero', () => {
+    const result = listHelper.mostBlogs(emptyList)
+    expect(result).toBe(0)
+  })
+
+  test('in a blog list with one blog is that author', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra'.toUpperCase(),
+      blogs: 1
+    })
+  })
+
+  test('in a blog list with many blogs is the one with highest number of blogs', () => {
+    const result = listHelper.mostBlogs(listWithManyBlogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin'.toUpperCase(),
+      blogs: 3
     })
   })
 })
