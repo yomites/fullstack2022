@@ -142,6 +142,41 @@ describe('deletion of a blog', () => {
   })
 })
 
+describe('updating a specific blog', () => {
+  test('succeeds when the blog exists and have a valid id', async () => {
+    const updateValue = {
+      likes: 20,
+    }
+    const blogsAtStart = await helper.blogsInDb()
+
+    const blogToUpdate = blogsAtStart[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updateValue)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(updateValue.likes).toBe(blogsAtEnd[0].likes)
+  })
+
+  test('fails with status code 404 if blog does not exist', async () => {
+    const validNonexistingId = await helper.nonExistingId()
+
+    await api
+      .put(`/api/blogs/${validNonexistingId}`)
+      .expect(404)
+  })
+
+  test('fails with status code 400 if the id is not valid', async () => {
+    const invalidId = '23dferth456dfg45rtf678f'
+
+    await api
+      .put(`/api/blogs/${invalidId}`)
+      .expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
