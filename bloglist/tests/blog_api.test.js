@@ -48,7 +48,7 @@ describe('HTTP requests', () => {
       title: 'async/await simplifies making async calls',
       author: 'Brown James',
       url: 'www.goasync.com',
-      likes: 0,
+      likes: 4,
     }
 
     await api
@@ -59,9 +59,31 @@ describe('HTTP requests', () => {
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(4)
 
     const titles = blogsAtEnd.map(r => r.title)
     expect(titles).toContain('async/await simplifies making async calls')
+  })
+
+  test('when likes is undefined, http post succeeds with likes taking a default value of 0', async () => {
+    const newBlog = {
+      title: 'Travelling through the nights',
+      author: 'Adam Benky',
+      url: 'www.adambenky.com',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    expect(blogsAtEnd[blogsAtEnd.length - 1].likes).toBe(0)
+
+    const titles = blogsAtEnd.map(r => r.title)
+    expect(titles).toContain('Travelling through the nights')
   })
 })
 

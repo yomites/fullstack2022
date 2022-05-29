@@ -45,6 +45,27 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "The old async",
+    "author": "Mycone James",
+    "url": "www.goasync.com"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "The adventure of Venturi",
+    "author": "Albert Swindon",
+    "url": "www.swindonync.com",
+    "likes": 8
+}
+
+###
 GET http://localhost:3003/api/blogs/628f671e7acf608b48f4d437
 
 ###
