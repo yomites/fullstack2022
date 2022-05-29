@@ -7,10 +7,11 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
+
+  for (let blog of helper.initialBlogs) {
+    let blogObject = new Blog(blog)
+    await blogObject.save()
+  }
 })
 
 describe('HTTP requests', () => {
@@ -40,6 +41,27 @@ describe('HTTP requests', () => {
         expect(element.id).toBeDefined()
       })
     }
+  })
+
+  test('a valid blog can be added', async () => {
+    const newBlog = {
+      title: 'async/await simplifies making async calls',
+      author: 'Brown James',
+      url: 'www.goasync.com',
+      likes: 0,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+    const titles = blogsAtEnd.map(r => r.title)
+    expect(titles).toContain('async/await simplifies making async calls')
   })
 })
 
