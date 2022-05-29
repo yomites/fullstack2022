@@ -85,6 +85,22 @@ describe('HTTP requests', () => {
     const titles = blogsAtEnd.map(r => r.title)
     expect(titles).toContain('Travelling through the nights')
   })
+
+  test('blogs missing title and url or any of the two properties are not added', async () => {
+    const newBlog = {
+      author: 'Kindle Beckoff',
+      url:'www.poweralgo.com',
+      likes: 6
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
 })
 
 afterAll(() => {
