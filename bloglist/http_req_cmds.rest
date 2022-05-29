@@ -70,3 +70,18 @@ GET http://localhost:3003/api/blogs/628f671e7acf608b48f4d437
 
 ###
 GET http://localhost:3003/api/blogs/628f7a627acf608b48f4d43d
+
+###
+DELETE http://localhost:3003/api/blogs/628f7a627acf608b48f4d43d
+
+###
+DELETE http://localhost:3003/api/blogs/62w23a627acf345b48f42w34
+
+###
+DELETE http://localhost:3003/api/blogs/628f7a627acf608b48f4d23d
+
+###
+DELETE http://localhost:3003/api/blogs/628f7a627acf608s23f4d43d
+
+###
+DELETE http://localhost:3003/api/blogs/628f7a627acf68f4d43d
