@@ -30,6 +30,17 @@ describe('HTTP requests', () => {
     const title = response.body.map(r => r.title)
     expect(title).toContain('another note cypress 1')
   })
+
+  test('the unique identifier property of blog post is named id', async () => {
+    const response = await api.get('/api/blogs')
+    const blogs = response.body
+
+    if (blogs.length !== 0) {
+      blogs.forEach(element => {
+        expect(element.id).toBeDefined()
+      })
+    }
+  })
 })
 
 afterAll(() => {
