@@ -1,5 +1,5 @@
 const dummy = (blogs) => {
-  // The if block is included because or eslint complaints
+  // The if block is included because of eslint complaints
   if (blogs.length >= 0) {
     return 1
   }
