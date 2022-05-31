@@ -85,3 +85,23 @@ DELETE http://localhost:3003/api/blogs/628f7a627acf608s23f4d43d
 
 ###
 DELETE http://localhost:3003/api/blogs/628f7a627acf68f4d43d
+
+### Create a new user
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "mluukkai",
+    "password": "salainen",
+    "name": "Matti Luukkainen"
+}
+
+### Create a new user
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "salainen",
+    "name": "Superuser"
+}
