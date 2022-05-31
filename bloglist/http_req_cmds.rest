@@ -138,3 +138,12 @@ Content-Type: application/json
     "author": "Edsger W. Dijkstra",
     "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html"
 }
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+ {
+    "username": "mluukkai",
+    "password": "salainen"
+}
