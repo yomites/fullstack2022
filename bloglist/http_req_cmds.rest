@@ -106,7 +106,7 @@ Content-Type: application/json
     "name": "Superuser"
 }
 
-### Create a new user
+###
 POST http://localhost:3003/api/users
 Content-Type: application/json
 
@@ -114,4 +114,27 @@ Content-Type: application/json
     "username": "",
     "password": "salainen",
     "name": "Great Superuser"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "url": "http://swindonync.com",
+    "title": "Twelve hills without slope 3",
+    "author": "Brandon Williams"
+}
+
+### Get all users
+GET http://localhost:3003/api/users
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+ {
+    "title": "Go To Statement Considered Harmful",
+    "author": "Edsger W. Dijkstra",
+    "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html"
 }
