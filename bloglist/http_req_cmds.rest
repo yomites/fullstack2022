@@ -105,3 +105,13 @@ Content-Type: application/json
     "password": "salainen",
     "name": "Superuser"
 }
+
+### Create a new user
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "",
+    "password": "salainen",
+    "name": "Great Superuser"
+}
