@@ -19,13 +19,11 @@ describe('when there is initially some blogs saved', () => {
 
   test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   test('a specific blog is within the returned blogs', async () => {
     const response = await api.get('/api/blogs')
-
     const title = response.body.map(r => r.title)
     expect(title).toContain('another note cypress 1')
   })
@@ -44,6 +42,18 @@ describe('existence of unique identifier property of the blop posts', () => {
   })
 })
 
+var token
+beforeEach(async () => {
+  await User.deleteMany({})
+  const passwordHash = await bcrypt.hash('salainen', 10)
+  const user = new User({ username: 'root', passwordHash })
+  await user.save()
+  const response = await api
+    .post('/api/login')
+    .send({ username: 'root', password: 'salainen' })
+  token = response.body.token
+})
+
 describe('addition of a new blog', () => {
   test('succeeds with valid data', async () => {
     const newBlog = {
@@ -56,6 +66,7 @@ describe('addition of a new blog', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('authorization', `bearer ${token}`)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -77,6 +88,7 @@ describe('addition of a new blog', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('authorization', `bearer ${token}`)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -98,6 +110,7 @@ describe('addition of a new blog', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('authorization', `bearer ${token}`)
       .expect(400)
 
     const blogsAtEnd = await helper.blogsInDb()
@@ -107,32 +120,48 @@ describe('addition of a new blog', () => {
 
 describe('deletion of a blog', () => {
   test('succeeds with status code 204 if id is valid', async () => {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+    const newBlog = {
+      title: 'async/await simplifies making async calls',
+      author: 'Brown James',
+      url: 'www.goasync.com',
+      likes: 4,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .set('authorization', `bearer ${token}`)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const blogsAtStart = (await helper.blogsInDb())
+    const blogToDelete = blogsAtStart[blogsAtStart.length - 1]
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('authorization', `bearer ${token}`)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
 
     expect(blogsAtEnd).toHaveLength(
-      helper.initialBlogs.length - 1
+      blogsAtStart.length - 1
     )
 
     const titles = blogsAtEnd.map(r => r.title)
-
     expect(titles).not.toContain(blogToDelete.title)
   })
 
   test('succeeds with statuscode 200 if id is valid but blog does not exist', async () => {
     const validNonexistingId = await helper.nonExistingId()
-
-    console.log(validNonexistingId)
-
     await api
       .get(`/api/blogs/${validNonexistingId}`)
+      .set('authorization', `bearer ${token}`)
       .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length)
   })
 
   test('fails with statuscode 400 if id is invalid', async () => {
@@ -140,7 +169,12 @@ describe('deletion of a blog', () => {
 
     await api
       .delete(`/api/blogs/${invalidId}`)
+      .set('authorization', `bearer ${token}`)
       .expect(400)
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length)
   })
 })
 
@@ -150,9 +184,7 @@ describe('updating a specific blog', () => {
       likes: 20,
     }
     const blogsAtStart = await helper.blogsInDb()
-
     const blogToUpdate = blogsAtStart[0]
-
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
       .send(updateValue)
@@ -164,7 +196,6 @@ describe('updating a specific blog', () => {
 
   test('fails with status code 404 if blog does not exist', async () => {
     const validNonexistingId = await helper.nonExistingId()
-
     await api
       .put(`/api/blogs/${validNonexistingId}`)
       .expect(404)
@@ -182,16 +213,13 @@ describe('updating a specific blog', () => {
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
-
     const passwordHash = await bcrypt.hash('sekret', 10)
     const user = new User({ username: 'root', passwordHash })
-
     await user.save()
   })
 
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
-
     const newUser = {
       username: 'mluukkai',
       password: 'salainen',
@@ -207,7 +235,6 @@ describe('when there is initially one user in db', () => {
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
-
     const usernames = usersAtEnd.map(u => u.username)
     expect(usernames).toContain(newUser.username)
   })
@@ -228,7 +255,6 @@ describe('when there is initially one user in db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('username must be unique')
-
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })
@@ -248,7 +274,6 @@ describe('when there is initially one user in db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('username must be given')
-
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })
@@ -269,7 +294,6 @@ describe('when there is initially one user in db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('username must be at least 3 characters long')
-
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })
@@ -289,7 +313,6 @@ describe('when there is initially one user in db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('password must be given')
-
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })
@@ -310,7 +333,6 @@ describe('when there is initially one user in db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('password must be at least 3 characters long')
-
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
   })
