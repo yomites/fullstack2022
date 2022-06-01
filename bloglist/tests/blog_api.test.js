@@ -23,7 +23,7 @@ describe('when there is initially some blogs saved', () => {
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
-  test('a specicifc blog is within the returned blogs', async () => {
+  test('a specific blog is within the returned blogs', async () => {
     const response = await api.get('/api/blogs')
 
     const title = response.body.map(r => r.title)

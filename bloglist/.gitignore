@@ -3,5 +3,3 @@
 # dependencies
 /node_modules
 .env
-
-http_req_cmds.rest
