@@ -154,9 +154,9 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2Mjk1YzNiN2Q1OTAxMWViNmJlODc2OWUiLCJpYXQiOjE2NTQwMjg4ODl9.aTYolo6TXqPMHOReHp9YLDKidKdk04ur1jT_YOC_6mQ
 
  {
-    "title": "Canonical string reduction",
-    "author": "Edsger W. Dijkstra",
-    "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html"
+    "title": "String concatenation",
+    "author": "Morris W. William",
+    "url": "http://www.strcat.ce.edu"
 }
 
 ###
@@ -171,5 +171,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE  http://localhost:3003/api/blogs/6295fccc76d53b2989e2bc64
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYyOTVjM2U4ZDU5MDExZWI2YmU4NzZhMSIsImlhdCI6MTY1NDAzMTEyM30.v7PZs9CJTrt0nx42eMp1ikcPgmQMPIiMWdQsYxpY61A
+DELETE  http://localhost:3003/api/blogs/6297b4e97bb3a48fa328c2b2
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2Mjk1YzNiN2Q1OTAxMWViNmJlODc2OWUiLCJpYXQiOjE2NTQwMjg4ODl9.aTYolo6TXqPMHOReHp9YLDKidKdk04ur1jT_YOC_6mQ
