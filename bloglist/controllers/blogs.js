@@ -58,8 +58,9 @@ blogsRouter.put('/:id', async (request, response) => {
     likes: body.likes,
   }
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    .populate('user', { username: 1, name: 1 })
   if (updatedBlog) {
-    response.status(204).json(updatedBlog.toJSON())
+    response.json(updatedBlog.toJSON())
   } else {
     response.status(404).send('The data could not be found')
   }
