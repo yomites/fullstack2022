@@ -10,15 +10,15 @@ import Togglable from './components/Togglable'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  
+
   useEffect(() => {
     blogService
       .getAll().then(initialBlogs => {
         setBlogs(initialBlogs)
-      })  
+      })
   }, [])
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password,
@@ -47,7 +47,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBloglistappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -105,20 +105,22 @@ const App = () => {
   return (
     <div>
       <Notification message={errorMessage} />
-      {user === null ? 
-        <LoginForm handleLogin={handleLogin} username={username} 
-          setUsername={setUsername} password={password} setPassword={setPassword} /> : 
-      <div>
-        <h2>blogs</h2>
-        <p>{user.name} logged in <button onClick={handleLogout}>logout</button> </p>
-        <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-          <BlogForm createBlog={addBlog} />
-        </Togglable>
-        {sortBlogsByLikes.map(blog =>
-          <Blog key={blog.id} blog={blog} updateLikes={updateBlog} 
-            deleteBlog={deleteBlog} loggedInUser={user} />
-        )}
-      </div>
+      {user === null ?
+        <LoginForm handleLogin={handleLogin} username={username}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          password={password} handlePasswordChange={({ target }) =>
+            setPassword(target.value)} /> :
+        <div>
+          <h2>blogs</h2>
+          <p>{user.name} logged in <button onClick={handleLogout}>logout</button> </p>
+          <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          {sortBlogsByLikes.map(blog =>
+            <Blog key={blog.id} blog={blog} updateLikes={updateBlog}
+              deleteBlog={deleteBlog} loggedInUser={user} />
+          )}
+        </div>
       }
     </div>
   )
