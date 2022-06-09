@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 describe('blog', () => {
@@ -27,5 +28,23 @@ describe('blog', () => {
 
     const likes = screen.queryByText('2 likes')
     expect(likes).toBeNull()
+  })
+
+  test('when view button clicked, test that url and likes are rendered', () => {
+    const user = userEvent.setup()
+    const viewButton = screen.getByText('view')
+    user.click(viewButton)
+
+    const title = screen.getByText('Component testing is done with react-testing-library',  { exact: false })
+    expect(title).toBeDefined()
+
+    const author = screen.getByText('Brian Taylor', { exact: false })
+    expect(author).toBeDefined()
+
+    const url = screen.queryByText('http://www.briantaylor.com')
+    expect(url).toBeDefined()
+
+    const likes = screen.queryByText('2 likes')
+    expect(likes).toBeDefined()
   })
 })
