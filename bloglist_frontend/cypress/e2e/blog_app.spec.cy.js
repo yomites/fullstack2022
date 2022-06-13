@@ -53,4 +53,31 @@ describe('Blog app', function() {
       cy.contains('The first test blog Brandon Williams')
     })
   })
+
+  describe('and several blogs exist', function () {
+    beforeEach(function () {
+      cy.login({ username: 'mluukkai', password: 'salainen' })
+      cy.createBlog({
+        title: 'The first test blog',
+        author: 'Brandon Williams',
+        url: 'http://www.thisfirsturl.com/index.html' })
+      cy.createBlog({
+        title: 'The second test blog',
+        author: 'Emmy Brown',
+        url: 'http://www.thissecondurl.com/index.html' })
+      cy.createBlog({
+        title: 'The third test blog',
+        author: 'Jane Maddisson',
+        url: 'http://www.thisthirdurl.com/index.html' })
+    })
+
+    it('user can like any of the blogs', function () {
+      cy.contains('The second test blog').parent().as('secondParent')
+        .find('#viewButton').click()
+      cy.contains('likes 0')
+      cy.get('@secondParent').find('#likeButton')
+        .click()
+      cy.contains('likes 1')
+    })
+  })
 })
