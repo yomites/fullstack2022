@@ -54,7 +54,7 @@ describe('Blog app', function() {
     })
   })
 
-  describe('and several blogs exist', function () {
+  describe('when several blogs exist', function () {
     beforeEach(function () {
       cy.login({ username: 'mluukkai', password: 'salainen' })
       cy.createBlog({
@@ -96,6 +96,35 @@ describe('Blog app', function() {
 
       cy.contains('The first test blog Brandon Williams').parent().find('#viewButton').click()
       cy.get('#deleteButton').should('not.exist')
+    })
+
+    it('blogs are arranged in order of likes. Tone with most likes first.', function () {
+      cy.contains('The first test blog Brandon Williams').parent().as('firstParent').find('#viewButton')
+        .click()
+      cy.get('@firstParent').find('#likeButton').click()
+      cy.wait(200)
+
+      cy.contains('The second test blog Emmy Brown').parent().as('secondParent')
+        .find('#viewButton').click()
+      cy.get('@secondParent').find('#likeButton').as('likeButton2')
+        .click()
+      cy.wait(200)
+      cy.get('@likeButton2').click()
+      cy.wait(200)
+
+      cy.contains('The third test blog Jane Maddisson').parent().as('thirdParent')
+        .find('#viewButton').click()
+      cy.get('@thirdParent').find('#likeButton').as('likeButton3')
+        .click()
+      cy.wait(200)
+      cy.get('@likeButton3').click()
+      cy.wait(200)
+      cy.get('@likeButton3').click()
+      cy.wait(200)
+
+      cy.get('.blog').eq(0).should('contain', 'The third test blog Jane Maddisson')
+      cy.get('.blog').eq(1).should('contain', 'The second test blog Emmy Brown')
+      cy.get('.blog').eq(2).should('contain', 'The first test blog Brandon Williams')
     })
   })
 })

@@ -15,7 +15,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, loggedInUser }) => {
     blog.user && blog.user.username === loggedInUser.username ? true : false
 
   return (
-    <div>
+    <div className='blog'>
       {details === false ? <div style={blogStyle}>
         {blog.title} {blog.author} <button id='viewButton' onClick={showCompleteInfo}>view</button> </div>
         :
