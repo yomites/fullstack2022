@@ -17,15 +17,15 @@ const Blog = ({ blog, updateLikes, deleteBlog, loggedInUser }) => {
   return (
     <div>
       {details === false ? <div style={blogStyle}>
-        {blog.title} {blog.author} <button onClick={showCompleteInfo}>view</button> </div>
+        {blog.title} {blog.author} <button id='viewButton' onClick={showCompleteInfo}>view</button> </div>
         :
         <div>
           <div style={blogStyle}>
             {blog.title} {blog.author} <button onClick={showCompleteInfo}>hide</button> <br />
             <a href={blog.url}>{blog.url}</a> <br />
-          likes {blog.likes}<button onClick={() => updateLikes(blog.id)}>like</button> <br />
+          likes {blog.likes}<button id='likeButton' onClick={() => updateLikes(blog.id)}>like</button> <br />
             {blog.user && blog.user.name ? blog.user.name : 'unknown'} <br />
-            {showDelBtn(blog, loggedInUser) && <button onClick={() => deleteBlog(blog.id)}>delete</button>}
+            {showDelBtn(blog, loggedInUser) && <button id='deleteButton' onClick={() => deleteBlog(blog.id)}>delete</button>}
           </div>
         </div>
       }
