@@ -79,5 +79,23 @@ describe('Blog app', function() {
         .click()
       cy.contains('likes 1')
     })
+
+    it('user who created a blog can delete it', function () {
+      cy.contains('The third test blog Jane Maddisson').parent().as('theParent')
+        .find('#viewButton').click()
+      cy.get('@theParent').find('#deleteButton').click()
+      cy.get('html')
+        .should('not.contain', 'The third test blog Jane Maddisson')
+        .and('contain', 'successfully deleted The third test blog by Jane Maddisson')
+    })
+
+    it('other users can not delete it', function () {
+      cy.createUser({ name: 'Arto Hellas', username: 'hellas', password: 'sekret' })
+      cy.contains('logout').click()
+      cy.login({ username: 'hellas', password: 'sekret' })
+
+      cy.contains('The first test blog Brandon Williams').parent().find('#viewButton').click()
+      cy.get('#deleteButton').should('not.exist')
+    })
   })
 })
