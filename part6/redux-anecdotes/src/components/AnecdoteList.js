@@ -9,7 +9,7 @@ const Anecdote = ({ anecdote, vote }) => {
       </div>
       <div>
             has {anecdote.votes}
-        <button onClick={() => vote(anecdote.id)}>vote</button>
+        <button onClick={vote}>vote</button>
       </div>
     </div>
   )
@@ -17,8 +17,8 @@ const Anecdote = ({ anecdote, vote }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state)
-  const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+  const anecdotes = useSelector(state => state.anecdotes)
+  const sortedAnecdotes = [ ...anecdotes ].sort((a, b) => b.votes - a.votes)
 
   return (sortedAnecdotes.map(a =>
     <Anecdote
