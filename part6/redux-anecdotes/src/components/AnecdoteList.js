@@ -24,13 +24,13 @@ const AnecdoteList = () => {
     }
     return anecdotes.filter(e => e.content.toLowerCase().includes(filter.toLowerCase()))
   })
-  const sortedAnecdotes = [ ...anecdotes ].sort((a, b) => b.votes - a.votes)
+  const sortedAnecdotes = [...anecdotes ].sort((a, b) => b.votes - a.votes)
 
   return (sortedAnecdotes.map(a =>
     <Anecdote
       key={a.id}
       anecdote={a}
-      vote={() => {dispatch(voteFor(a.id))
+      vote={() => {dispatch(voteFor(a))
         dispatch(createNotification(`you voted ${a.content}`, 5))}}
     />
   ))
