@@ -2,9 +2,31 @@ import { useState } from 'react'
 import {
   Routes,
   Route,
-  Link, useMatch } from 'react-router-dom'
+  Link, useMatch, useNavigate } from 'react-router-dom'
 
-const Menu = ({ anecdotes }) => {
+const Notification = ({ notification }) => {
+  if (notification === null) {
+    return null
+  }
+
+  const msgStyle = {
+    color: notification.type === 'error' ? 'red' : 'green',
+    background: 'lightgrey',
+    fontStyle: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  return (
+    <div style={msgStyle}>
+      {notification.message}
+    </div>
+  )
+}
+
+const Menu = ({ anecdotes, addNew, notification }) => {
   const match = useMatch('/anecdotes/:id')
   const anecdote = match
     ? anecdotes.find(a => a.id === Number(match.params.id))
@@ -13,6 +35,7 @@ const Menu = ({ anecdotes }) => {
   const padding = {
     paddingRight: 5
   }
+
   return (
     <div>
       <div>
@@ -20,11 +43,11 @@ const Menu = ({ anecdotes }) => {
         <Link style={padding} to="/create">create new</Link>
         <Link style={padding} to="/about">about</Link>
       </div>
-
+      <Notification notification={notification} />
       <div>
         <Routes>
           <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote} />} />
-          <Route path="/create" element={<CreateNew />} />
+          <Route path="/create" element={<CreateNew addNew={addNew} />} />
           <Route path="/about" element={<About />} />
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         </Routes>
@@ -77,20 +100,24 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (props) => {
+const CreateNew = ({ addNew }) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({
+    addNew({
       content,
       author,
       info,
       votes: 0
     })
+    navigate('/')
+    setContent('')
+    setAuthor('')
+    setInfo('')
   }
 
   return (
@@ -134,15 +161,24 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    const message = `a new anecdote ${anecdote.content} created!`
+    createNotification(message, 'success')
   }
 
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
+
+  const createNotification = (message, type='error') => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -158,7 +194,7 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} />
+      <Menu anecdotes={anecdotes} addNew={addNew} notification={notification} />
       <Footer />
     </div>
   )
