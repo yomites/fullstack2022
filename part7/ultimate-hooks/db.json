@@ -7,18 +7,6 @@
     {
       "content": "the best featrure ever <3",
       "id": 2
-    },
-    {
-      "content": "Indeed custom hooks are great!",
-      "id": 3
-    },
-    {
-      "content": "This is indeed one of the best features of react",
-      "id": 4
-    },
-    {
-      "content": "another great note",
-      "id": 5
     }
   ],
   "persons": [
@@ -31,21 +19,6 @@
       "name": "kaltsoon",
       "number": "045-2323456",
       "id": 2
-    },
-    {
-      "name": "Willifort",
-      "number": "456-324345",
-      "id": 3
-    },
-    {
-      "name": "Juho",
-      "number": "358-43434343",
-      "id": 4
-    },
-    {
-      "name": "Brenda",
-      "number": "358-1234567",
-      "id": 5
     }
   ]
 }
