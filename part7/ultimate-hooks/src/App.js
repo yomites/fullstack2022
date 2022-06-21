@@ -1,54 +1,38 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-
-const useField = (type) => {
-  const [value, setValue] = useState('')
-
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  return {
-    type,
-    value,
-    onChange
-  }
-}
-
-const useResource = (baseUrl) => {
-  const [resources, setResources] = useState([])
-
-  // ...
-
-  const create = (resource) => {
-    // ...
-  }
-
-  const service = {
-    create
-  }
-
-  return [
-    resources, service
-  ]
-}
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react'
+import { useField, useResource } from './hooks'
 
 const App = () => {
-  const content = useField('text')
-  const name = useField('text')
-  const number = useField('text')
+  const [contentReset, content] = useField('text')
+  const [nameReset, name] = useField('text')
+  const [numberReset, number] = useField('text')
 
   const [notes, noteService] = useResource('http://localhost:3005/notes')
   const [persons, personService] = useResource('http://localhost:3005/persons')
 
+  useEffect(() => {
+    noteService.getAll().then((response) => {
+      return response
+    })
+  }, [])
+
+  useEffect(() => {
+    personService.getAll().then((response) => {
+      return response
+    })
+  }, [])
+
   const handleNoteSubmit = (event) => {
     event.preventDefault()
     noteService.create({ content: content.value })
+    contentReset()
   }
  
   const handlePersonSubmit = (event) => {
     event.preventDefault()
     personService.create({ name: name.value, number: number.value})
+    nameReset()
+    numberReset()
   }
 
   return (
