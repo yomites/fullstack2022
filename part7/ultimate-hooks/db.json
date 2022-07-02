@@ -7,6 +7,10 @@
     {
       "content": "the best featrure ever <3",
       "id": 2
+    },
+    {
+      "content": "New addtion to the notes",
+      "id": 3
     }
   ],
   "persons": [
@@ -19,6 +23,11 @@
       "name": "kaltsoon",
       "number": "045-2323456",
       "id": 2
+    },
+    {
+      "name": "Oladele Oriyomi",
+      "number": "3434-45455",
+      "id": 3
     }
   ]
 }
